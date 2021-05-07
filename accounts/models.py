@@ -29,7 +29,7 @@ class Car(models.Model):
         ('mazda', 'mazda'),
         ('mers', 'mers')
     ), max_length=30)
-    dossier = models.ForeignKey(Dossier, on_delete=models.CASCADE)
+    dossier = models.ForeignKey(Dossier, on_delete=models.CASCADE, related_name='car')
 
 
 class Education(models.Model):
@@ -37,7 +37,7 @@ class Education(models.Model):
     end_date = models.DateField()
     school_name = models.CharField(max_length=30)
     major = models.CharField(max_length=30)
-    dossier = models.ForeignKey(Dossier, on_delete=models.CASCADE)
+    dossier = models.ForeignKey(Dossier, on_delete=models.CASCADE, related_name='education')
 
 
 class Warcraft(models.Model):
@@ -47,4 +47,4 @@ class Warcraft(models.Model):
     major = models.CharField(max_length=30)
     start_pose = models.DateField(auto_now_add=True)
     end_pose = models.DateField()
-    dossier = models.ForeignKey(Dossier, on_delete=models.CASCADE)
+    dossier = models.ForeignKey(Dossier, on_delete=models.CASCADE, related_name='warcraft')
