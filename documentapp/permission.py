@@ -7,7 +7,7 @@ class IsSuperOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS:
             return True
 
-        return request.user.groups.filter(name__in=['general', 'serjant', 'president']) or request.user.is_superuser
+        return request.user.groups.filter(name__in=['general', 'president']) or request.user.is_superuser
 
 
 class FilterObjPermission(BasePermission):
@@ -18,7 +18,7 @@ class FilterObjPermission(BasePermission):
             return True
 
         else:
-            user_group = request.user.groups.filter(name__in=['general', 'president', 'serjant'])
+            user_group = request.user.groups.filter(name='general')
             doc = obj.document_root in ['public', 'private', 'secret', 'top-secret']
             if user_group and doc:
                 return True
