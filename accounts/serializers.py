@@ -47,32 +47,48 @@ class RegisterSerializers(serializers.ModelSerializer):
 
 
 class CarSerializers(serializers.ModelSerializer):
-    model = Car
-    fields = '__all__'
+    class Meta:
+        model = Car
+        fields = ['id', 'mark', 'model', 'year', 'number', 'color', 'type', ]
 
 
 class EducationSerializers(serializers.ModelSerializer):
     class Meta:
         model = Education
-        fields = '__all__'
+        fields = ['id', 'start_date', 'end_date', 'school_name', 'major', ]
 
 
 class WarcraftSerializers(serializers.ModelSerializer):
     class Meta:
         model = Warcraft
-        fields = '__all__'
+        fields = ['id', 'start_date', 'end_date', 'military_area',
+                  'major', 'start_pose', 'end_pose', ]
 
 
 class DossierSerializers(serializers.ModelSerializer):
+    education = EducationSerializers(many=True)
+    warcraft = WarcraftSerializers(many=True)
     car = CarSerializers(many=True)
+    print(1)
 
     class Meta:
         model = Dossier
-        fields = ['id', 'full_name', 'date_birth', 'image', 'gender', 'user', 'car']
+        fields = ['id', 'full_name', 'date_birth', 'image', 'gender', 'user',
+                  'car', 'education', 'warcraft']
 
     def create(self, validated_data):
         car_data = validated_data.pop('car')
+        print(car_data)
+        education_data = validated_data.pop('education')
+        print(education_data)
+        warcraft_data = validated_data.pop('warcraft')
+        print(warcraft_data)
+        print(validated_data)
         dossier = Dossier.objects.create(**validated_data)
-        for car1 in car_data:
-            Car.objects.create(dossier=dossier, **car1)
+        for car in car_data:
+            Car.objects.create(dossier=dossier, **car)
+        for education in education_data:
+            Education.objects.create(dossier=dossier, **education)
+        for warcraft in warcraft_data:
+            Warcraft.objects.create(dossier=dossier, **warcraft)
         return dossier
