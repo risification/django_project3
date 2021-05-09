@@ -7,13 +7,16 @@ from .serializers import *
 # Create your views here.
 
 class DocumentModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [FilterObjPermission]
+    permission_classes = [FilterObjPermission,IsSuperOrReadOnly]
     serializer_class = DocumentSerializers
     filter_backends = [SearchFilter]
     search_fields = ['status', 'document_root']
 
     def get_queryset(self):
-        group = self.request.user.groups.all()[0].name
+        try:
+            group = self.request.user.groups.all()[0].name
+        except IndexError:
+            return Document.objects.filter(document_root='public')
         if group == 'user':
             docs = Document.objects.filter(document_root__in=['public'])
         elif group == 'serjant':
@@ -23,4 +26,3 @@ class DocumentModelViewSet(viewsets.ModelViewSet):
         elif group == 'president':
             docs = Document.objects.filter(document_root__in=['public', 'private', 'secret', 'top-secret'])
         return docs
-
