@@ -14,18 +14,3 @@ class DossierModelViewSet(viewsets.ModelViewSet):
 class RegisterModelViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = RegisterSerializers
-
-
-class EducationModelViewSet(viewsets.ModelViewSet):
-    queryset = Education.objects.all()
-    serializer_class = EducationSerializers
-
-
-class WarcraftModelViewSet(viewsets.ModelViewSet):
-    queryset = Warcraft.objects.all()
-    serializer_class = WarcraftSerializers
-
-
-class CarModelViewSet(viewsets.ModelViewSet):
-    queryset = Car.objects.all()
-    serializer_class = CarSerializers
