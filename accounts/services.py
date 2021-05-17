@@ -11,3 +11,10 @@ def mailing(username):
     body = f'User with {username} register in military database, please check him!'
     email = EmailMessage(subject=subjects, body=body, to=email_list)
     email.send()
+
+
+def validate_password(password):
+    if len(password) >= 8 and not password.isdigit() and not password.isalpha():
+        return True
+    else:
+        return False
