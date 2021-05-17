@@ -7,7 +7,7 @@ from .serializers import *
 # Create your views here.
 
 class DocumentModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [FilterObjPermission,IsSuperOrReadOnly]
+    permission_classes = [FilterObjPermission, IsSuperOrReadOnly]
     serializer_class = DocumentSerializers
     filter_backends = [SearchFilter]
     search_fields = ['status', 'document_root']
@@ -26,3 +26,6 @@ class DocumentModelViewSet(viewsets.ModelViewSet):
         elif group == 'president':
             docs = Document.objects.filter(document_root__in=['public', 'private', 'secret', 'top-secret'])
         return docs
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
