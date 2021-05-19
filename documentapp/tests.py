@@ -142,7 +142,7 @@ class TestDateExpiredDocument(APITestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('documents-detail/<int:id>/')
+        # self.url = reverse('documents-detail')
         Document.objects.create(title='not expired doc',
                                 date_expired="2021-12-31", document_root='private')
         Document.objects.create(title='expired doc',
@@ -151,12 +151,12 @@ class TestDateExpiredDocument(APITestCase):
 
     def test_get_not_expired(self):
         self.client.login(username='general', password='123456')
-        self.response = self.client.get(f'{self.url}/1/')
+        self.response = self.client.get("http://127.0.0.1:8000/document/1/")
         print(self.response.json())
         self.assertContains(self.response, 'active', status_code=200)
 
     def test_get_expired(self):
         self.client.login(username='general', password='123456')
-        self.response = self.client.get(self.url.format(2))
+        self.response = self.client.get("http://127.0.0.1:8000/document/2/")
         print(self.response.json())
-        self.assertNotContains(self.response, 'dead', status_code=200)
+        self.assertContains(self.response, 'Страница не найдена', status_code=404)
