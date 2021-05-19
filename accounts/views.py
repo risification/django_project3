@@ -3,7 +3,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
-from .permission import DossierPostMethod
+from .permission import RegisterPermission
 from .serializers import *
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
@@ -57,6 +57,7 @@ class DossierModelViewSet(APIView):
 
 
 class RegisterModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [RegisterPermission]
     queryset = User.objects.all()
     serializer_class = RegisterSerializers
 
