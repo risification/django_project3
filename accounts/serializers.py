@@ -7,23 +7,27 @@ from .models import *
 
 
 class CarSerializers(serializers.ModelSerializer):
-    id = serializers.IntegerField()
+    car_id = serializers.IntegerField(source='id', required=False)
 
     class Meta:
         model = Car
-        fields = ['id', 'mark', 'model', 'year', 'number', 'color', 'type', ]
+        fields = ['car_id', 'mark', 'model', 'year', 'number', 'color', 'type', ]
 
 
 class EducationSerializers(serializers.ModelSerializer):
+    education_id = serializers.IntegerField(source='id', required=False)
+
     class Meta:
         model = Education
-        fields = ['id', 'start_date', 'end_date', 'school_name', 'major', ]
+        fields = ['education_id', 'start_date', 'end_date', 'school_name', 'major', ]
 
 
 class WarcraftSerializers(serializers.ModelSerializer):
+    warcraft_id = serializers.IntegerField(source='id', required=False)
+
     class Meta:
         model = Warcraft
-        fields = ['id', 'start_date', 'end_date', 'military_area',
+        fields = ['warcraft_id', 'start_date', 'end_date', 'military_area',
                   'major', 'start_pose', 'end_pose', ]
 
 
