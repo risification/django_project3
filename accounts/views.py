@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
+
+from .permission import DossierPostMethod
 from .serializers import *
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
@@ -9,14 +11,30 @@ from rest_framework.views import APIView
 
 # Create your views here.
 
-class DossierModelViewSet(viewsets.ModelViewSet):
-    serializer_class = DossierSerializers
+class DossierModelViewSet(APIView):
+    # permission_classes = [DossierPostMethod]
 
-    def get_queryset(self):
-        if isinstance(self.request.user, User):
-            dossier = Dossier.objects.filter(user=self.request.user)
-            return dossier
-        
+    def get(self, request, *args, **kwargs):
+        try:
+            dossier = Dossier.objects.get(user=request.user)
+        except Dossier.DoesNotExist:
+            return Response({"data": "Dossier doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = DossierSerializers(dossier)
+        return Response(serializer.data)
+
+    def put(self, request, *args, **kwargs):
+        dossier = Dossier.objects.get(user=request.user)
+        serializer = DossierSerializers(dossier, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+    def delete(self, request, *args, **kwargs):
+        dossier = Dossier.objects.get(user=request.user)
+        dossier.delete()
+        return Response({"data": "delete successful!"})
+
 
 # class DossierView(APIView):
 #     def get(self, request, *args, **kwargs):
