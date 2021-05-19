@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import *
 
 router = DefaultRouter()
-router.register('dossiers', DossierModelViewSet)
+router.register('dossiers', DossierModelViewSet, basename='dossier')
 router.register('register', RegisterModelViewSet)
 urlpatterns = [
     path('', include(router.urls), name='start'),
