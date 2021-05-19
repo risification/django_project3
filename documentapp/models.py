@@ -12,7 +12,7 @@ class Document(models.Model):
     status = models.CharField(choices=(
         ('active', 'active'),
         ('dead', 'dead')
-    ), max_length=30)
+    ), max_length=30, default='active')
     document_root = models.CharField(choices=(
         ('public', 'public'),
         ('private', 'private'),
