@@ -3,16 +3,20 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from .serializers import *
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.views import APIView
 
 
 # Create your views here.
 
 class DossierModelViewSet(viewsets.ModelViewSet):
-    queryset = Dossier.objects.all()
     serializer_class = DossierSerializers
 
+    def get_queryset(self):
+        if isinstance(self.request.user, User):
+            dossier = Dossier.objects.filter(user=self.request.user)
+            return dossier
+        
 
 # class DossierView(APIView):
 #     def get(self, request, *args, **kwargs):
