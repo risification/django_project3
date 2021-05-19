@@ -33,7 +33,7 @@ class Car(models.Model):
 
 
 class Education(models.Model):
-    start_date = models.DateField(auto_now_add=True)
+    start_date = models.DateField()
     end_date = models.DateField()
     school_name = models.CharField(max_length=30)
     major = models.CharField(max_length=30)
@@ -41,10 +41,10 @@ class Education(models.Model):
 
 
 class Warcraft(models.Model):
-    start_date = models.DateField(auto_now_add=True)
+    start_date = models.DateField()
     end_date = models.DateField()
     military_area = models.CharField(max_length=30)
     major = models.CharField(max_length=30)
-    start_pose = models.DateField(auto_now_add=True)
+    start_pose = models.DateField()
     end_pose = models.DateField()
     dossier = models.ForeignKey(Dossier, on_delete=models.CASCADE, related_name='warcraft')
