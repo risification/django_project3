@@ -16,13 +16,13 @@ class DocumentModelViewSet(viewsets.ModelViewSet):
         try:
             group = self.request.user.groups.all()[0].name
         except IndexError:
-            return Document.objects.filter(document_root='public')
+            return Document.objects.filter(document_root='public', status='active')
         if group == 'user':
-            docs = Document.objects.filter(document_root__in=['public'])
+            docs = Document.objects.filter(document_root__in=['public'], status='active')
         elif group == 'serjant':
-            docs = Document.objects.filter(document_root__in=['public', 'private'])
+            docs = Document.objects.filter(document_root__in=['public', 'private'], status='active')
         elif group == 'general':
-            docs = Document.objects.filter(document_root__in=['public', 'private', 'secret'])
+            docs = Document.objects.filter(document_root__in=['public', 'private', 'secret'], status='active')
         elif group == 'president':
             docs = Document.objects.filter(document_root__in=['public', 'private', 'secret', 'top-secret'])
         return docs
